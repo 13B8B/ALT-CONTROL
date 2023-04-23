@@ -1,0 +1,325 @@
+-- Disable any previously running code
+if disable then disable() end
+
+local Following = "" -- Put username of the account that will be controlling it
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer or Players:GetPropertyChangedSignal("LocalPlayer"):Wait() and Players.LocalPlayer
+local connections = {} -- Table to store connections to events
+local SayMessageRequest -- Reference to the SayMessageRequest remote event
+local commands -- Table to store available commands
+local cmdlist -- String to store a list of available commands
+
+local inventoryFolder = game:GetService("ReplicatedStorage").Inventories[Player.Name] -- Folder to store player's inventory
+local folder = game:GetService("ReplicatedStorage").Inventories[Player.Name] -- Another reference to player's inventory folder
+local found = false -- Flag to indicate if a target player has been found
+
+-- Functions to get player's character, humanoid and root part
+local function getchar(plr)
+if not plr then plr = lp end
+return plr.Character or plr.CharacterAdded:Wait()
+end
+
+local function gethumanoid(plr)
+if not plr then plr = lp end
+return getchar(plr):WaitForChild("Humanoid")
+end
+
+local function getroot(plr)
+if not plr then plr = lp end
+local humanoid = gethumanoid(plr)
+repeat task.wait() until humanoid.RootPart
+return humanoid.RootPart
+end
+
+-- Get reference to SayMessageRequest remote event
+SayMessageRequest = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+
+-- Function to send message to chat
+local function say(...)
+    if not SayMessageRequest then
+        SayMessageRequest = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+    end
+    SayMessageRequest:FireServer(tostring(...),"All")
+end
+  
+-- Get reference to Players service
+local Players = game:GetService("Players")
+
+-- Transfers an item with the given name from the player's inventory to a chest
+local function transferItem(itemName)
+    pcall(function()
+        -- Get the player's inventory
+        local inventories = game:GetService("ReplicatedStorage").Inventories
+        local inventory = inventories[Player.Name]
+
+        -- Check if the inventory has the item
+        if inventory and inventory:FindFirstChild(itemName) then
+            -- Loop through all chests to find the BlockChest owned by the "chest" entity
+            for _, chest in ipairs(inventories:GetChildren()) do
+                if chest.Name == "BlockChest" and tostring(chest.ChestOwner.Value) == "chest" then
+                    -- Try to transfer the item to the chest using a server function call
+                    local success, result = pcall(function()
+                        game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged["Inventory:ChestGiveItem"]:InvokeServer(chest, inventory[itemName])
+                    end)
+                    -- If the transfer fails, log an error message
+                    if not success then
+                        warn("Error transferring item:", result)
+                        print(debug.traceback())
+                    end
+                end
+            end
+        else
+            -- If the item is not found in the inventory, log a warning message
+            warn(itemName .. " inventory not found")
+        end
+    end)
+end
+
+commands = {
+    ["iron"] = function(speaker) 
+        -- find the inventory folder for the speaker
+        local inventoryFolder = game:GetService("ReplicatedStorage").Inventories:FindFirstChild(speaker.Name)
+        -- loop 100 times to drop 100 iron (if they exist)
+        for i = 1, 100 do 
+            if inventoryFolder and inventoryFolder:FindFirstChild("iron") then
+                -- create a table to drop the iron
+                local ohTable1 = {
+                    ["item"] = inventoryFolder.iron
+                }
+                -- drop the iron
+                game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.DropItem:InvokeServer(ohTable1)
+            end                
+        end      
+    end,
+
+    ["emerald"] = function(speaker)
+        -- find the inventory folder for the speaker
+        local inventoryFolder = game:GetService("ReplicatedStorage").Inventories:FindFirstChild(speaker.Name)
+        -- loop 100 times to drop 100 emeralds (if they exist)
+        for i = 1, 100 do 
+            -- check if the speaker has emeralds in their inventory
+            if inventoryFolder and inventoryFolder:FindFirstChild("emerald") then
+                -- create a table to drop the emerald
+                local ohTable1 = {
+                    ["item"] = inventoryFolder.emerald
+                }
+                -- drop the emeralds
+                game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.DropItem:InvokeServer(ohTable1)
+            end
+        end
+    end,
+
+    ["diamond"] = function(speaker)
+        -- find the inventory folder for the speaker
+        local inventoryFolder = game:GetService("ReplicatedStorage").Inventories:FindFirstChild(speaker.Name)
+        -- loop 100 times to drop 100 diamonds (if they exist)
+        for i = 1, 100 do
+            -- check if the speaker has diamonds in their inventory
+            if inventoryFolder and inventoryFolder:FindFirstChild("diamond") then
+                -- create a table to drop the diamonds
+                local ohTable1 = {
+                    ["item"] = inventoryFolder.diamond
+                }
+                -- drop the diamonds
+                game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.DropItem:InvokeServer(ohTable1)
+            end 
+        end 
+    end,
+
+    ["resources"] = function(speaker)
+        local inventoryFolder = game:GetService("ReplicatedStorage").Inventories:FindFirstChild(speaker.Name) -- get the inventory folder of the speaker's character
+        for i = 1, 100 do -- loop 100 times
+            for _, itemName in ipairs({"diamond", "emerald", "iron"}) do -- loop through the item names
+                local item = inventoryFolder and inventoryFolder:FindFirstChild(itemName) -- get the item from the inventory folder
+                if item then -- if the item exists
+                    game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.DropItem:InvokeServer({ item = item })
+                end
+            end
+        end
+    end,  
+    ["auto-chest"] = function(speaker)
+        local isAutoChestEnabled = false -- variable to keep track of whether the auto-chest feature is enabled
+        local inventoryFolder = game:GetService("ReplicatedStorage").Inventories:FindFirstChild(speaker.Name) -- get the inventory folder of the speaker's character
+        local function transferItem(itemName) -- helper function to transfer an item to the chest
+            local item = inventoryFolder and inventoryFolder:FindFirstChild(itemName) -- get the item from the inventory folder
+            if item then -- if the item exists
+                game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.BedwarsChest:InvokeServer({ item = item, amount = item.Amount, fromInventory = true })
+            end
+        end  
+        isAutoChestEnabled = true -- set isAutoChestEnabled to true
+        repeat
+            task.wait() -- wait for a short amount of time
+            transferItem("diamond") -- transfer the diamond item to the chest
+            transferItem("emerald") -- transfer the emerald item to the chest
+            transferItem("iron") -- transfer the iron item to the chest           
+        until not isAutoChestEnabled -- repeat until isAutoChestEnabled is false
+    end,
+
+    ["auto-chest-off"] = function(speaker)
+        local isAutoChestEnabled = false -- variable to keep track of whether the auto-chest feature is enabled
+        isAutoChestEnabled = false -- set isAutoChestEnabled to false
+    end,
+
+    ["follow"] = function(speaker)
+        local isFollowing = false -- variable to keep track of whether the player is following
+        local followingPlayerName -- variable to hold the name of the player being followed
+        local players = game:GetService("Players") -- get the Players service
+    repeat
+        pcall(function()
+            if speaker.Name == followingPlayerName then -- if the speaker's name matches the name of the player being followed
+                isFollowing = true -- set isFollowing to true
+                    while isFollowing do -- loop while isFollowing is true
+                        task.wait() -- wait for a short amount of time
+                        local playerPosition = game:GetService("Workspace")[followingPlayerName].HumanoidRootPart.Position -- get the position of the player being followed
+                        players.LocalPlayer.Character.Humanoid:MoveTo(playerPosition) -- move the local player's character to the player being followed
+                        game:GetService("Workspace")[players.LocalPlayer.Name].Humanoid.WalkSpeed = 20 -- set the local player's walk speed to 20
+                    
+                        local isOnGround = players.LocalPlayer.Character.Humanoid:GetState() == Enum.HumanoidStateType.Running or -- check if the local player's character is on the ground
+                        players.LocalPlayer.Character.Humanoid:GetState() == Enum.HumanoidStateType.RunningNoPhysics or
+                        players.LocalPlayer.Character.Humanoid:GetState() == Enum.HumanoidStateType.Landed
+                        if isOnGround then -- if the local player's character is on the ground
+                            players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) -- make the local player's character jump
+                        end
+                    end  
+                end
+            end)
+            wait()
+        until not isFollowing -- repeat until isFollowing is false
+    end,
+    ["unfollow"] = function(speaker)
+        isFollowing = false -- toggles isFollowing
+    end,  
+    ["armor"] = function(speaker)
+        for _, folder in pairs(game:GetService("ReplicatedStorage").Inventories:GetChildren()) do
+            if folder.Name:match(Player.Name) then
+                for _, item in pairs(folder:GetChildren()) do 
+                    if string.find(item.Name, "leather_helmet") then
+                        found = true
+                    elseif string.find(item.Name, "iron_helmet") or string.find(item.Name, "diamond_helmet") or string.find(item.Name, "void_") or string.find(item.Name, "emerald_")  then
+                        found = true
+                    end
+                end
+            end
+        end
+        if not found then
+            game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.BedwarsPurchaseItem:InvokeServer({
+                shopItem = {
+                    lockAfterPurchase = true,
+                    itemType = "leather_chestplate",
+                    price = 50,
+                    customDisplayName = "Leather Armor",
+                    currency = "iron",
+                    category = "Combat",
+                    nextTier = "iron_chestplate",
+                    ignoredByKit = { "bigman" },
+                    spawnWithItems = { "leather_helmet", "leather_chestplate", "leather_boots" },
+                    amount = 1
+                }
+            })
+        end  
+        for _, folder in pairs(game:GetService("ReplicatedStorage").Inventories:GetChildren()) do
+            if folder.Name:match(Player.Name) then
+                for _, item in pairs(folder:GetChildren()) do wait(.5)
+        
+                    if string.find(item.Name, "leather_helmet") then
+                        game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.BedwarsPurchaseItem:InvokeServer({
+                            shopItem = {
+                                lockAfterPurchase = true,
+                                itemType = "iron_chestplate",
+                                price = 50,
+                                customDisplayName = "Iron Armor",
+                                currency = "iron",
+                                category = "Combat",
+                                nextTier = "iron_chestplate",
+                                ignoredByKit = { "bigman" },
+                                spawnWithItems = { "iron_helmet", "iron_chestplate", "iron_boots" },
+                                amount = 1
+                            }
+                        })
+                    elseif string.find(item.Name, "iron_helmet") then
+                        print("Buying Diamond Armor")
+                        game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.BedwarsPurchaseItem:InvokeServer({
+                            shopItem = {
+                                lockAfterPurchase = true,
+                                itemType = "diamond_chestplate",
+                                price = 8,
+                                prevTier = "iron_chestplate",
+                                customDisplayName = "Diamond Armor",
+                                currency = "emerald",
+                                amount = 1,
+                                category = "Combat",
+                                tiered = true,
+                                ignoredByKit = { "bigman" },
+                                spawnWithItems = { "diamond_helmet", "diamond_chestplate", "diamond_boots" },
+                                nextTier = "emerald_chestplate",
+                            },
+                        })
+                    elseif string.find(item.Name, "diamond_helmet") or string.find(item.Name, "void_") or string.find(item.Name, "emerald_")  then
+                        print("Emerald Armor")
+                        game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.BedwarsPurchaseItem:InvokeServer({
+                            shopItem = {
+                                lockAfterPurchase = true,
+                                itemType = "emerald_chestplate",
+                                price = 40,
+                                prevTier = "diamond_chestplate",
+                                customDisplayName = "Emerald Armor",
+                                currency = "emerald",
+                                amount = 1,
+                                tiered = true,
+                                ignoredByKit = { "bigman" },
+                                spawnWithItems = { "emerald_helmet", "emerald_chestplate", "emerald_boots" },
+                                category = "Combat",
+                            },
+                        })
+                    end
+                end
+            end 
+        end    
+    end,  
+    ["cmds"] = function()
+        if not cmdlist then
+            cmdlist = {}
+            for i,v in next, commands do
+                table.insert(cmdlist,i)
+            end
+            cmdlist = table.concat(cmdlist,", ")
+        end
+        say("Commands: "..cmdlist)
+    end,
+}
+
+-- Sets up the event connection for a player
+local function init(plr)
+    connections[plr] = plr.Chatted:Connect(function(msg)
+        local args = msg:split(" ")  -- Split the message into separate words
+        local cmd = args[1]:lower() -- Get the first word as the command
+        local commandfunc = commands[cmd] -- Get the command function from the commands table
+        
+        if commandfunc then
+            commandfunc(plr, args)  -- Call the command function with the player and arguments
+        end
+    end)
+end
+
+-- Event connection for when a player leaves the game
+connections["PlayerRemoving"] = Players.PlayerRemoving:Connect(function(plr)
+    connections[plr]:Disconnect()  -- Disconnect the player's event connection
+    connections[plr] = nil  -- Remove the player's event connection from the table
+end)
+
+-- Event connection for when a new player joins the game
+connections["PlayerAdded"] = Players.PlayerAdded:Connect(init)
+
+-- Set up the event connection for each existing player
+for i, plr in next, Players:GetPlayers() do
+    init(plr)
+end
+
+-- A function to disconnect all event connections and remove itself
+-- (Note: This can only be called once, after which it will be removed)
+getgenv().disable = function()
+    for i, v in next, connections do
+        v:Disconnect()  -- Disconnect each player's event connection
+    end
+    getgenv().disable = nil  -- Remove the function from the global environment
+end
