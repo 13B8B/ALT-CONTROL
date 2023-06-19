@@ -669,25 +669,6 @@ local library = {
 	Signal = {},
 }
 
-local Services = setmetatable({},{
-    __index = function(self, Index)
-        local Service = game:GetService(Index);
-        if Service then
-            self[Index] = Service; 
-            return Service;
-        end
-    end,
-})
-if hookmetamethod and typeof(hookmetamethod) == 'function' then
-	local oldHook
-	oldHook = hookmetamethod(game, "__namecall", function(self, ...)
-		if getnamecallmethod() == "Kick" then
-			return
-		end
-		return oldHook(self, ...)
-	end)
-end
-
 library.Settings.fileName = library.Name .. "_Settings.txt"
 local page = {}
 local section = {}
