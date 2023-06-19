@@ -1743,18 +1743,8 @@ do
 					)
 
 					
-						button.MouseEnter:connect(function()
-							library.Functions.Tween(button, { BackgroundColor3 = library.Settings.theme.Accent }, 0.2)
-						end)
-						button.MouseLeave:connect(function()
-							pcall(function()
-								library.Functions.Tween(
-									button,
-									{ BackgroundColor3 = library.Settings.theme.DarkContrast },
-									0.2
-								)
-							end)
-						end)
+				
+
 					
 					Frame["Terms&Conditions"].Buttons.Cancel.MouseButton1Click:Connect(function()
 						library.Functions.Ripple(Frame["Terms&Conditions"].Buttons.Cancel, 0.5).Completed:Wait()
