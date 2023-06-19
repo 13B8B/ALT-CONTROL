@@ -1680,49 +1680,8 @@ do
 								}),
 							}),
 						}),
-						library.Functions.newInstance("Frame", { -- How to use
-							Name = "HowToUse",
-							Size = UDim2.new(1, 0, 0, 165),
-							BackgroundTransparency = 1,
-							LayoutOrder = 2,
-							Visible = false,
-						}, {
-							library.Functions.newInstance("UIListLayout", {
-								Padding = UDim.new(0, 5),
-								SortOrder = Enum.SortOrder.LayoutOrder,
-								HorizontalAlignment = Enum.HorizontalAlignment.Center,
-							}),
-							library.Functions.newInstance("ScrollingFrame", {
-								ClipsDescendants = true,
-								Size = UDim2.new(1, 0, 0, 146),
-								BackgroundTransparency = 1,
-								BorderSizePixel = 0,
-								LayoutOrder = 1,
-								ScrollBarThickness = 3,
-								CanvasSize = UDim2.new(0, 0, 0, 205),
-								ScrollBarImageColor3 = library.Settings.theme.TextColor,
-							}, {
-								library.Functions.newInstance("UIGridLayout", {
-									HorizontalAlignment = Enum.HorizontalAlignment.Center,
-									CellPadding = UDim2.new(0, 5, 0, 5),
-									CellSize = UDim2.new(0, 100, 0, 100),
-								}),
-							}),
-							library.Functions.newInstance("TextButton", { -- Skip Button
-								Name = "Skip",
-								AutoButtonColor = false,
-								Size = UDim2.new(1, 0, 0, 14),
-								BackgroundTransparency = 1,
-								LayoutOrder = 2,
-								TextColor3 = library.Settings.theme.TextColor,
-								Text = "<b>Skip</b>",
-								RichText = true,
-								TextXAlignment = Enum.TextXAlignment.Right,
-								TextSize = 14,
-								Font = Enum.Font.SciFi,
-							}),
-						}),
-					})
+				
+					--})
 					local text = "By accepting the terms and conditions, <b>we are not responsible</b> for any prohibition or inconvenience caused by the use of scripts provided by "
 						.. library.Name
 						.. ".\n<u><b>UNAUTHORIZED USE</b></u><br/>The marketing of modified products is not authorized. You may not claim intellectual or exclusive property in any of our products, modified or unmodified. All products are the property of the content providers. Unless otherwise specified, our products are provided without warranty of any kind, express or implied."
