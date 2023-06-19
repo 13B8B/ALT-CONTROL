@@ -1742,68 +1742,7 @@ do
 						Frame["Terms&Conditions"].ScrollingFrame.TextLabel.AbsoluteSize.Y
 					)
 
-					for i, v in pairs(help) do
-						local button = library.Functions.newInstance("ImageButton", {
-							Name = i,
-							Parent = Frame.HowToUse.ScrollingFrame,
-							AutoButtonColor = false,
-							BackgroundColor3 = library.Settings.theme.DarkContrast,
-						}, {
-							library.Functions.newInstance("UICorner", {
-								CornerRadius = UDim.new(0, 8),
-							}),
-							library.Functions.newInstance("Frame", {
-								Size = UDim2.new(1, -2, 1, -2),
-								Position = UDim2.new(0.5, 0, 0.5, 0),
-								AnchorPoint = Vector2.new(0.5, 0.5),
-								BackgroundColor3 = library.Settings.theme.Background,
-							}, {
-								library.Functions.newInstance("UICorner", {
-									CornerRadius = UDim.new(0, 8),
-								}),
-								library.Functions.newInstance("UIListLayout", {
-									SortOrder = Enum.SortOrder.LayoutOrder,
-									VerticalAlignment = Enum.VerticalAlignment.Center,
-									HorizontalAlignment = Enum.HorizontalAlignment.Center,
-									Padding = UDim.new(0, 10),
-								}),
-								library.Functions.newInstance("UIPadding", {
-									PaddingTop = UDim.new(0, 10),
-									PaddingLeft = UDim.new(0, 5),
-									PaddingRight = UDim.new(0, 5),
-									PaddingBottom = UDim.new(0, 10),
-								}),
-								library.Functions.newInstance("TextLabel", {
-									Name = "Title",
-									Size = UDim2.new(1, 0, 0, 16),
-									LayoutOrder = 1,
-									BackgroundTransparency = 1,
-									TextColor3 = library.Settings.theme.TextColor,
-									TextSize = 16,
-									Text = "<b>" .. i .. "</b>",
-									RichText = true,
-									Font = Enum.Font.SciFi,
-									ClipsDescendants = true,
-									TextWrapped = true,
-									TextTruncate = Enum.TextTruncate.AtEnd,
-								}),
-								library.Functions.newInstance("TextLabel", {
-									Name = "Description",
-									Size = UDim2.new(1, 0, 1, -26),
-									LayoutOrder = 2,
-									BackgroundTransparency = 1,
-									TextColor3 = library.Settings.theme.LightContrast,
-									TextYAlignment = Enum.TextYAlignment.Top,
-									TextSize = 14,
-									Text = "<b>" .. v .. "</b>",
-									RichText = true,
-									Font = Enum.Font.SciFi,
-									ClipsDescendants = true,
-									TextWrapped = true,
-									TextTruncate = Enum.TextTruncate.AtEnd,
-								}),
-							}),
-						})
+			
 						button.MouseEnter:connect(function()
 							library.Functions.Tween(button, { BackgroundColor3 = library.Settings.theme.Accent }, 0.2)
 						end)
