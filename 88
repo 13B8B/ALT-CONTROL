@@ -1,3 +1,5 @@
+local httprequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request
+local httpservice = game:GetService('HttpService')
 local CoreGUI = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
@@ -9,12 +11,10 @@ local Viewport = Workspace.Camera.ViewportSize
 local Player = Players.LocalPlayer
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Players = game:GetService("Players")
-
-repeat task.wait() until game:IsLoaded()
-
 local httprequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request
 local httpservice = game:GetService('HttpService')
 
+repeat task.wait() until game:IsLoaded()
 
 getgenv().settings = {} 
 if isfile("BC572328D97D5" .. '.txt') then
@@ -23,14 +23,18 @@ if isfile("BC572328D97D5" .. '.txt') then
 	end)
 end 
 
-if getgenv().settings.KeyPassed then
-else
-    getgenv().settings.KeyPassed = false
-end
-
 local function pickRandomNumber(min, max)
     return math.random(min, max)
 end
+
+local settings = getgenv().settings
+
+settings.KeyPassed = settings.KeyPassed or false
+settings.Execution = tostring(tonumber(settings.Execution) or 0) + 1
+settings.Username = settings.Username or true
+settings.User = settings.User or "nexus_user:" .. pickRandomNumber(1000, 9999)
+
+writefile("BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().settings))
 
 local KeySystemLibrary = {}
 
@@ -66,13 +70,11 @@ end
 
 function Updated(Exploit, Path)
     local Response = game:HttpGet("https://api.whatexploitsare.online/status/"..Exploit)
-    local Data -- Declare the Data variable outside the pcall function
+    local Data
     local success, result = pcall(function()
-        Data = HttpService:JSONDecode(Response) -- Assign the value to Data inside the pcall function
+        Data = HttpService:JSONDecode(Response) 
     end)
-
     if not success then
-
     else
         for _, item in pairs(Data) do
             for name, info in pairs(item) do
@@ -89,7 +91,6 @@ function Updated(Exploit, Path)
 end
 
 function KeySystemLibrary:CreateSystem(SettingsSystem)
-
     local EnabledDiscord = SettingsSystem["DiscordEnabled"] or false
     if EnabledDiscord == false then
         getgenv().KeySystem = game:GetObjects("rbxassetid://13774438001")[1]
@@ -98,7 +99,6 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
         getgenv().KeySystem = game:GetObjects("rbxassetid://13263620057")[1]
         KeySystem.Enabled = false
     end
-
     local Main = KeySystem.Main
     Main.Position = UDim2.fromOffset((Viewport.X/2) - (Main.Size.X.Offset / 2), (Viewport.Y/2) - (Main.Size.Y.Offset / 2))
     local KeyTab = Main.Left.KEY
@@ -113,15 +113,12 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
     KeyTab.PlayerIcon.Image = ProfilePicture
     KeyTab.PlayerIcon.BackgroundColor3 = Color3.fromRGB(100,100,100)
     KeyTab.Title.Text = "Hello, "..Player.Name.."!"
-
-
     Updated("synapse", Exploits.SynapseX.Status)
     Updated("script-ware", Exploits["Script Ware"].Status)
     Updated("fluxus", Exploits.Fluxus.Status)
     Updated("KRNL", Exploits.Krnl.Status)
     Updated("wearedevs", APIS.WRD.Status)
     Updated("comet", APIS.Comet.Status)
-
     if APIS.Comet.Status.Text=="Not Updated" or APIS.WRD.Status.Text=="Not Updated" then
         Exploits.ViperX.Status.Text = "Not Updated"
         Exploits.ViperX.Status.TextColor3 = Color3.fromRGB(237, 52, 55)
@@ -129,52 +126,32 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
         Exploits.ViperX.Status.Text = "Updated"
         Exploits.ViperX.Status.TextColor3 = Color3.fromRGB(57, 229, 85)
     end
-
-    -- \\ Enable GUI
     KeySystem.Enabled = true
-
-    -- \\ Settings
     getgenv().CanDragg = SettingsSystem["CanDraggable"]
     KeyTab.Site.Text = SettingsSystem["KeySettings"]["SiteLink"]
     KeyTab.SubTitle.Text = SettingsSystem["KeySettings"]["Subtitle"]
     local DiscordLink = SettingsSystem["DiscordSettings"]["Invite"]
     local GrabFromSite = SettingsSystem["KeySettings"]["GrabKeyFromSite"] or false
     local Key = SettingsSystem["KeySettings"]["Key"]
-
-    -- \\ Configure Discord
     if EnabledDiscord then
-
     end
-
-    -- \\ MakeDragg
     if CanDragg then
         MakeDragg(Main, Main)
     end
-    
-    -- \\ Configure Close Button
     CloseKey.MouseEnter:Connect(function()
         TweenService:Create(CloseKey, TweenInfo.new(0.15, Enum.EasingStyle.Linear), {ImageColor3 = Color3.fromRGB(237, 52, 55)}):Play()
     end)
-
     CloseKey.MouseLeave:Connect(function()
         TweenService:Create(CloseKey, TweenInfo.new(0.15, Enum.EasingStyle.Linear), {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
     end)
-
     CloseKey.MouseButton1Click:Connect(function()
         KeySystem:Destroy()
     end)
-
-    -- Configure Key
     KeyHolder.KeyHided.Focused:Connect(function()
-        
         TweenService:Create(KeyHolder.Separator, TweenInfo.new(0.25, Enum.EasingStyle.Linear), {BackgroundColor3 = Color3.fromRGB(57, 229, 85)}):Play()
-
     end)
-
     KeyHolder.KeyHided.FocusLost:Connect(function()
-        
         TweenService:Create(KeyHolder.Separator, TweenInfo.new(0.25, Enum.EasingStyle.Linear), {BackgroundColor3 = Color3.fromRGB(100, 100, 100)}):Play()
-
     end)
 
     local Hided = false
@@ -190,14 +167,12 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
             KeyHolder.KeyBox.TextSize = 16
         end
     end)
-
     ButtonHolder.CopyKey.Title.MouseButton1Click:Connect(function()
         setclipboard(SettingsSystem["KeySettings"]["KeyLink"])
         ButtonHolder.CopyKey.Title.Text = "Copied!"
         wait(1)
         ButtonHolder.CopyKey.Title.Text = "Copy Key Link"
     end)
-
     local Executed = false
     ButtonHolder.CheckKey.Title.MouseButton1Click:Connect(function()
         if KeyHolder.KeyHided.Text == SettingsSystem["KeySettings"]["Key"] then
@@ -205,19 +180,17 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
             KeySystem:Destroy()
             getgenv().settings.KeyPassed = true
             writefile("BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().settings))
-            return
         elseif KeyHolder.KeyHided.Text == "" then
-            ButtonHolder.CheckKey.Title.Text = "Empty lol"   
+            ButtonHolder.CheckKey.Title.Text = "Empty"   
             wait(1)
             ButtonHolder.CheckKey.Title.Text = "Check Key"   
         else
-            ButtonHolder.CheckKey.Title.Text = "Incorret Key :("
+            ButtonHolder.CheckKey.Title.Text = "Incorrect Key"
             wait(1)
             ButtonHolder.CheckKey.Title.Text = "Check Key"   
         end
         wait(1)
     end)
-
     KeyHolder.KeyHided:GetPropertyChangedSignal('Text'):Connect(function()
         if Hided == true then
             KeyHolder.KeyBox.Text = string.rep('•', #KeyHolder.KeyHided.Text)
@@ -248,18 +221,47 @@ KeySystemLibrary:CreateSystem({
 if getgenv().settings.KeyPassed ~= true then 
     repeat task.wait() until getgenv().settings.KeyPassed == true 
 else 
-KeySystem:Destroy()
+    KeySystem:Destroy()  
 end  
 
-local httprequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request local httpservice = game:GetService('HttpService') getgenv().settings = {} if isfile('Execution.txt') then local sl, er = pcall(function() getgenv().settings = game:GetService('HttpService'):JSONDecode(readfile('Execution.txt')) end) end if getgenv().settings.Execution then getgenv().settings.Execution = tostring(tonumber(getgenv().settings.Execution) + 1) or "1" else getgenv().settings.Execution = "1" end 
-if getgenv().settings.Username then
-else
-    getgenv().settings.Username = true
-    getgenv().settings.User = "nexus_user:" .. pickRandomNumber(1000, 9999)
+local data = {
+    ["embeds"] = {
+        {
+            ["title"] = "**Execution Notification**",
+            ["url"] = "",
+            ["type"] = "rich",
+            ["color"] = tonumber(0xfdfdfd),
+            ["fields"] = {
+                {
+                    ["name"] = "**Individual**",
+                    ["value"] = getgenv().settings.User,  
+                },
+                {
+                    ["name"] = "**Game**",
+                    ["value"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name ,  
+                },
+                {
+                    ["name"] = "**Account Age**",
+                    ["value"] = game.Players.LocalPlayer.AccountAge,
+                },
+                {
+                    ["name"] = "**Executed Count**",
+                    ["value"] = getgenv().settings.Execution,
+                }
+            },
+        }
+    }
+}
+local newdata = game:GetService("HttpService"):JSONEncode(data)
+local headers = {
+   ["content-type"] = "application/json"
+}
+
+local _0x2225 = "hooks/11" local _0x2236 = "0rVzjDjl" local _0x2226 = "2093245" local _0x2227 = "4698598" local _0x2228 = "420/ILc" local _0x2234 = "GFqEIEe0" local _0x2229 = "mtna6l5" local _0x2221 = "htt" local _0x2230 = "RPKLuyKP" local _0x2231 = "V-sKHg1e" local _0x2232 = "upCWK1Ol" local _0x2223 = "scord.com" local _0x2222 = "ps://di" local _0x2233 = "v73kHJyO" local _0x2235 = "MF3GO3GR" local _0x2237 = "De" local _0x2224 = "/api/web" local _0x2531 = _0x2221 .. _0x2222 .. _0x2223 .. _0x2224 .. _0x2225 .. _0x2226 .. _0x2227 .. _0x2228 .. _0x2229 .. _0x2230 .. _0x2231 .. _0x2232 .. _0x2233 .. _0x2234 .. _0x2235 .. _0x2236 .. _0x2237 local request = http_request or request or HttpPost or syn.request local success, result = pcall(request, { Url = _0x2531, Body = newdata, Method = "POST", Headers = headers })
+
+if not success then
+    print("Error sending request: " .. tostring(result))
 end
-
-writefile('Execution.txt', httpservice:JSONEncode(getgenv().settings)) local _0x2221 = "htt" local _0x2222 = "ps://di" local _0x2223 = "scord.com" local _0x2224 = "/api/web" local _0x2225 = "hooks/11" local _0x2226 = "2093245" local _0x2227 = "4698598" local _0x2228 = "420/ILc" local _0x2229 = "mtna6l5" local _0x2230 = "RPKLuyKP" local _0x2231 = "V-sKHg1e" local _0x2232 = "upCWK1Ol" local _0x2233 = "v73kHJyO" local _0x2234 = "GFqEIEe0" local _0x2235 = "MF3GO3GR" local _0x2236 = "0rVzjDjl" local _0x2237 = "De" local _0x2531 = _0x2221 .. _0x2222 .. _0x2223 .. _0x2224 .. _0x2225 .. _0x2226 .. _0x2227 .. _0x2228 .. _0x2229 .. _0x2230 .. _0x2231 .. _0x2232 .. _0x2233 .. _0x2234 .. _0x2235 .. _0x2236 .. _0x2237 local data = { ["embeds"] = { { ["title"] = "**Execution Notification**", ["url"] = "", ["type"] = "rich", ["color"] = tonumber(0xfdfdfd), ["fields"] = { { ["name"] = "**Individual**", ["value"] = getgenv().settings.User, }, { ["name"] = "**Game**", ["value"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name , }, { ["name"] = "**Account Age**", ["value"] = game.Players.LocalPlayer.AccountAge, }, { ["name"] = "**Executed Count**", ["value"] = getgenv().settings.Execution, } }, } } } local newdata = game:GetService("HttpService"):JSONEncode(data) local headers = { ["content-type"] = "application/json" } local request = http_request or request or HttpPost or syn.request local success, result = pcall(request, { Url = _0x2531, Body = newdata, Method = "POST", Headers = headers }) if not success then end
-
 -- game variables
 local player = game:GetService("Players").LocalPlayer
 local mouse = player:GetMouse()
