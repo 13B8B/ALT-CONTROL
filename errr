@@ -64,34 +64,31 @@ local notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/
 local notification = notification:new()
 
 function Updated(Exploit, Path)
-
     local Response = game:HttpGet("https://api.whatexploitsare.online/status/"..Exploit)
+    local Data -- Declare the Data variable outside the pcall function
     local success, result = pcall(function()
-    local Data = HttpService:JSONDecode(Response)
+        Data = HttpService:JSONDecode(Response) -- Assign the value to Data inside the pcall function
     end)
+
     if not success then
-            notification:Notification({
-                title = "Notification",
-                description = "ERROR : Execute again...",
-                time = 5
-            })
-    end
-    for _, item in pairs(Data) do
-        for name, info in pairs(item) do
-            if info.updated == false then
-
-                Path.Text = "Not Updated"
-                Path.TextColor3 = Color3.fromRGB(237, 52, 55)
-
-            else
-
-                Path.Text = "Updated"
-                Path.TextColor3 = Color3.fromRGB(57, 229, 85)
-
+        notification:Notification({
+            title = "Notification",
+            description = "ERROR: Execute again...",
+            time = 5
+        })
+    else
+        for _, item in pairs(Data) do
+            for name, info in pairs(item) do
+                if info.updated == false then
+                    Path.Text = "Not Updated"
+                    Path.TextColor3 = Color3.fromRGB(237, 52, 55)
+                else
+                    Path.Text = "Updated"
+                    Path.TextColor3 = Color3.fromRGB(57, 229, 85)
+                end
             end
         end
     end
-
 end
 
 function KeySystemLibrary:CreateSystem(SettingsSystem)
