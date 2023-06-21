@@ -205,11 +205,11 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
             return
         elseif KeyHolder.KeyHided.Text == "" then
             ButtonHolder.CheckKey.Title.Text = "Empty lol"   
-            wait(2)
+            wait(1)
             ButtonHolder.CheckKey.Title.Text = "Check Key"   
         else
             ButtonHolder.CheckKey.Title.Text = "Incorret Key :("
-            wait(2)
+            wait(1)
             ButtonHolder.CheckKey.Title.Text = "Check Key"   
         end
         wait(1)
