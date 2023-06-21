@@ -60,12 +60,22 @@ function MakeDragg(DragPoint, Main)
 		end)
     end)
 end
+local notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/13B8B/ARCHIVE/main/Notification"))()
+local notification = notification:new()
 
 function Updated(Exploit, Path)
 
     local Response = game:HttpGet("https://api.whatexploitsare.online/status/"..Exploit)
+    local success, result = pcall(function()
     local Data = HttpService:JSONDecode(Response)
-
+    end)
+    if not success then
+            notification:Notification({
+                title = "Notification",
+                description = "ERROR : Execute again...",
+                time = 5
+            })
+    end
     for _, item in pairs(Data) do
         for name, info in pairs(item) do
             if info.updated == false then
