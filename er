@@ -239,6 +239,8 @@ KeySystemLibrary:CreateSystem({
 })
 if getgenv().settings.KeyPassed ~= true then 
     repeat task.wait() print("G") until getgenv().settings.KeyPassed == true 
+else 
+KeySystem:Destroy()
 end  
 
 
