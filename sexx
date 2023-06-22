@@ -1667,10 +1667,10 @@ do
 					AutoButtonColor = false,
 				}, {
 					library.Functions.newInstance("UICorner", {
-						CornerRadius = UDim.new(0, 2),
+						CornerRadius = UDim.new(0, 1),
 					}),
 					library.Functions.newInstance("ImageLabel", {
-						Size = UDim2.new(0, 20, 0, 20),
+						Size = UDim2.new(0, 25, 0, 25),
 						Position = UDim2.new(0.5, 0, 0.5, 0),
 						AnchorPoint = Vector2.new(0.5, 0.5),
 						Image = library.Icons.nexus,
@@ -1693,7 +1693,14 @@ do
 				}),
 			}),
 		})
-
+		library.Functions.Tween(
+			Sidebar.Title.Logo,
+			{ Rotation = 360 },
+			1.5,
+			Enum.EasingStyle.Linear,
+			Enum.EasingDirection.In,
+			-1
+		)
 		local Topbar = library.Functions.newInstance("Frame", { -- Top bar
 			Name = "Topbar",
 			Parent = ScreenGui.Frame,
