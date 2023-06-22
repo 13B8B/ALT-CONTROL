@@ -1701,6 +1701,14 @@ do
 			Enum.EasingDirection.In,
 			-1
 		)
+		library.Functions.Tween(
+			Sidebar.Title.Logo.UICorner,
+			{ CornerRadius = UDim.new(1, 0) },
+			1.5,
+			Enum.EasingStyle.Linear,
+			Enum.EasingDirection.In,
+			-1
+		)
 		local Topbar = library.Functions.newInstance("Frame", { -- Top bar
 			Name = "Topbar",
 			Parent = ScreenGui.Frame,
