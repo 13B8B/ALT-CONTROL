@@ -16,10 +16,10 @@ local httpservice = game:GetService('HttpService')
 makefolder("nexus")
 repeat task.wait() until game:IsLoaded()
 
-getgenv().settings = {} 
+getgenv().keysettings = {} 
 if isfile("nexus".."/BC572328D97D5" .. '.txt') then
 	local sl, er = pcall(function()
-		getgenv().settings = game:GetService('HttpService'):JSONDecode(readfile("nexus".."/BC572328D97D5" .. '.txt'))
+		getgenv().keysettings = game:GetService('HttpService'):JSONDecode(readfile("nexus".."/BC572328D97D5" .. '.txt'))
 	end)
 end 
 
