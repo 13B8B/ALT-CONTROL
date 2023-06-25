@@ -270,7 +270,7 @@ local mouse = player:GetMouse()
 
 -- Library variables
 local library = {
-	Name = "Premier X",
+	Name = "X",
 	IsLoaded = false,
 	prefix = Enum.KeyCode.LeftAlt,
 	data = {},
@@ -937,7 +937,7 @@ local library = {
 	Signal = {},
 }
 
---library.Settings.fileName = library.Name .. "_Settings.txt"
+library.Settings.fileName = library.Name .. "_Settings.txt"
 local page = {}
 local section = {}
 local objects = {}
@@ -1721,7 +1721,7 @@ do
 		end)
 		return data
 	end
-	--[[function library.SettingsLoad()
+	function library.SettingsLoad()
 		if not isfile(library.Settings.fileName) then
 			return
 		end
@@ -1736,8 +1736,8 @@ do
 			library.Settings = library.Functions.mergeTable(library.Settings, data)
 		end
 		return data
-	end]]
-	--library.SettingsLoad()
+	end
+	library.SettingsLoad()
 end
 -- End function
 table.insert(library.end_funcs, function()
@@ -4582,6 +4582,7 @@ end
 	end
 end
 
+return library
 
 -- local window = library.new() -- create new window
 -- local prefix = Enum.KeyCode.Home
