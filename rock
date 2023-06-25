@@ -937,7 +937,7 @@ local library = {
 	Signal = {},
 }
 
-library.Settings.fileName = library.Name .. "_Settings.txt"
+library.Settings.fileName = library.Name .. "/_Settings.txt"
 local page = {}
 local section = {}
 local objects = {}
