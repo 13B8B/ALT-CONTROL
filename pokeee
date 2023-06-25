@@ -270,7 +270,7 @@ local mouse = player:GetMouse()
 
 -- Library variables
 local library = {
-	Name = "X",
+	Name = "nexus",
 	IsLoaded = false,
 	prefix = Enum.KeyCode.LeftAlt,
 	data = {},
