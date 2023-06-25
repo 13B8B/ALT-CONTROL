@@ -13,7 +13,7 @@ local LocalPlayer = game:GetService("Players").LocalPlayer
 local Players = game:GetService("Players")
 local httprequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request
 local httpservice = game:GetService('HttpService')
-
+makefolder("nexus")
 repeat task.wait() until game:IsLoaded()
 
 getgenv().settings = {} 
