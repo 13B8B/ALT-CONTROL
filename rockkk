@@ -18,9 +18,9 @@ makefolder("nexus")
 repeat task.wait() until game:IsLoaded()
 
 getgenv().KeySettings = {} 
-if isfile("nexus".."/BC572328D97D5" .. '.txt') then
+if isfile("nexus".."/Key" .. '.txt') then
 	local sl, er = pcall(function()
-		getgenv().KeySettings = game:GetService('HttpService'):JSONDecode(readfile("nexus".."/BC572328D97D5" .. '.txt'))
+		getgenv().KeySettings = game:GetService('HttpService'):JSONDecode(readfile("nexus".."/Key" .. '.txt'))
 	end)
 end 
 
@@ -35,7 +35,7 @@ settings.Execution = tostring(tonumber(settings.Execution) or 0) + 1
 settings.Username = settings.Username or true
 settings.User = settings.User or "nexus_user:" .. pickRandomNumber(1000, 9999)
 
-writefile("nexus".."/BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().KeySettings))
+writefile("nexus".."/Key" .. '.txt', httpservice:JSONEncode(getgenv().KeySettings))
 
 local KeySystemLibrary = {}
 
@@ -180,7 +180,7 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
             ButtonHolder.CheckKey.Title.Text = "Correct Key!"
             KeySystem:Destroy()
             getgenv().KeySettings.KeyPassed = true
-            writefile("nexus".."/BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().KeySettings))
+            writefile("nexus".."/Key" .. '.txt', httpservice:JSONEncode(getgenv().KeySettings))
         elseif KeyHolder.KeyHided.Text == "" then
             ButtonHolder.CheckKey.Title.Text = "Empty"   
             wait(1)
