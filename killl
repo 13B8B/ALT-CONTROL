@@ -1770,11 +1770,7 @@ do
 		repeat
 			task.wait()
 		until game:IsLoaded()
-		repeat
-			pcall(function()
-				game.CoreGui:FindFirstChild(library.Name):Destroy()
-			end)
-		until not game.CoreGui:FindFirstChild(library.Name)
+
 		library.Enabled = true
 		task.spawn(function()
 			while library.Enabled do
