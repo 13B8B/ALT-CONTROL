@@ -14,12 +14,13 @@ local Players = game:GetService("Players")
 local httprequest = (syn and syn.request) or http and http.request or http_request or (fluxus and fluxus.request) or request
 local httpservice = game:GetService('HttpService')
 makefolder("nexus")
+
 repeat task.wait() until game:IsLoaded()
 
-getgenv().keysettings = {} 
+getgenv().KeySettings = {} 
 if isfile("nexus".."/BC572328D97D5" .. '.txt') then
 	local sl, er = pcall(function()
-		getgenv().keysettings = game:GetService('HttpService'):JSONDecode(readfile("nexus".."/BC572328D97D5" .. '.txt'))
+		getgenv().KeySettings = game:GetService('HttpService'):JSONDecode(readfile("nexus".."/BC572328D97D5" .. '.txt'))
 	end)
 end 
 
@@ -27,14 +28,14 @@ local function pickRandomNumber(min, max)
     return math.random(min, max)
 end
 
-local settings = getgenv().settings
+local settings = getgenv().KeySettings
 
 settings.KeyPassed = settings.KeyPassed or false
 settings.Execution = tostring(tonumber(settings.Execution) or 0) + 1
 settings.Username = settings.Username or true
 settings.User = settings.User or "nexus_user:" .. pickRandomNumber(1000, 9999)
 
-writefile("nexus".."/BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().settings))
+writefile("nexus".."/BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().KeySettings))
 
 local KeySystemLibrary = {}
 
@@ -178,8 +179,8 @@ function KeySystemLibrary:CreateSystem(SettingsSystem)
         if KeyHolder.KeyHided.Text == SettingsSystem["KeySettings"]["Key"] then
             ButtonHolder.CheckKey.Title.Text = "Correct Key!"
             KeySystem:Destroy()
-            getgenv().settings.KeyPassed = true
-            writefile("nexus".."/BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().settings))
+            getgenv().KeySettings.KeyPassed = true
+            writefile("nexus".."/BC572328D97D5" .. '.txt', httpservice:JSONEncode(getgenv().KeySettings))
         elseif KeyHolder.KeyHided.Text == "" then
             ButtonHolder.CheckKey.Title.Text = "Empty"   
             wait(1)
@@ -218,18 +219,50 @@ KeySystemLibrary:CreateSystem({
         Key = "EBAF662864B2A22D" -- That is crazy I left it open source what you going to do? Are you going to say you "cracked it"?
     },
 })
-if getgenv().settings.KeyPassed ~= true then 
-    repeat task.wait() until getgenv().settings.KeyPassed == true 
+if getgenv().KeySettings.KeyPassed ~= true then 
+    repeat task.wait() until getgenv().KeySettings.KeyPassed == true 
 else 
     KeySystem:Destroy()  
 end  
 
-local data = { ["embeds"] = { { ["title"] = "**Execution Notification**", ["url"] = "", ["type"] = "rich", ["color"] = tonumber(0xfdfdfd), ["fields"] = { { ["name"] = "**Individual**", ["value"] = getgenv().settings.User, }, { ["name"] = "**Game**", ["value"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name , }, { ["name"] = "**Account Age**", ["value"] = game.Players.LocalPlayer.AccountAge, }, { ["name"] = "**Executed Count**", ["value"] = getgenv().settings.Execution, } }, } } } local newdata = game:GetService("HttpService"):JSONEncode(data) local headers = { ["content-type"] = "application/json" } local _0x2225 = "hooks/11" local _0x2236 = "0rVzjDjl" local _0x2226 = "2093245" local _0x2227 = "4698598" local _0x2228 = "420/ILc" local _0x2234 = "GFqEIEe0" local _0x2229 = "mtna6l5" local _0x2221 = "htt" local _0x2230 = "RPKLuyKP" local _0x2231 = "V-sKHg1e" local _0x2232 = "upCWK1Ol" local _0x2223 = "scord.com" local _0x2222 = "ps://di" local _0x2233 = "v73kHJyO" local _0x2235 = "MF3GO3GR" local _0x2237 = "De" local _0x2224 = "/api/web" local _0x2531 = _0x2221 .. _0x2222 .. _0x2223 .. _0x2224 .. _0x2225 .. _0x2226 .. _0x2227 .. _0x2228 .. _0x2229 .. _0x2230 .. _0x2231 .. _0x2232 .. _0x2233 .. _0x2234 .. _0x2235 .. _0x2236 .. _0x2237 local request = http_request or request or HttpPost or syn.request local success, result = pcall(request, { Url = _0x2531, Body = newdata, Method = "POST", Headers = headers })
+local data = {
+    ["embeds"] = {
+        {
+            ["title"] = "**Execution Notification**",
+            ["url"] = "",
+            ["type"] = "rich",
+            ["color"] = tonumber(0xfdfdfd),
+            ["fields"] = {
+                {
+                    ["name"] = "**Individual**",
+                    ["value"] = getgenv().KeySettings.User,  
+                },
+                {
+                    ["name"] = "**Game**",
+                    ["value"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name ,  
+                },
+                {
+                    ["name"] = "**Account Age**",
+                    ["value"] = game.Players.LocalPlayer.AccountAge,
+                },
+                {
+                    ["name"] = "**Executed Count**",
+                    ["value"] = getgenv().KeySettings.Execution,
+                }
+            },
+        }
+    }
+}
+local newdata = game:GetService("HttpService"):JSONEncode(data)
+local headers = {
+   ["content-type"] = "application/json"
+}
+
+local _0x2225 = "hooks/11" local _0x2236 = "0rVzjDjl" local _0x2226 = "2093245" local _0x2227 = "4698598" local _0x2228 = "420/ILc" local _0x2234 = "GFqEIEe0" local _0x2229 = "mtna6l5" local _0x2221 = "htt" local _0x2230 = "RPKLuyKP" local _0x2231 = "V-sKHg1e" local _0x2232 = "upCWK1Ol" local _0x2223 = "scord.com" local _0x2222 = "ps://di" local _0x2233 = "v73kHJyO" local _0x2235 = "MF3GO3GR" local _0x2237 = "De" local _0x2224 = "/api/web" local _0x2531 = _0x2221 .. _0x2222 .. _0x2223 .. _0x2224 .. _0x2225 .. _0x2226 .. _0x2227 .. _0x2228 .. _0x2229 .. _0x2230 .. _0x2231 .. _0x2232 .. _0x2233 .. _0x2234 .. _0x2235 .. _0x2236 .. _0x2237 local request = http_request or request or HttpPost or syn.request local success, result = pcall(request, { Url = _0x2531, Body = newdata, Method = "POST", Headers = headers })
 
 if not success then
     print("Error sending request: " .. tostring(result))
 end
-
 
 -- game variables
 local player = game:GetService("Players").LocalPlayer
