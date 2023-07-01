@@ -220,7 +220,7 @@ KeySystemLibrary:CreateSystem({
     },
 })
 if getgenv().KeySettings.KeyPassed ~= true then 
-    repeat task.wait() until getgenv().KeySettings.KeyPassed == true 
+    repeat wait(.1) until getgenv().KeySettings.KeyPassed == true 
 else 
     KeySystem:Destroy()  
 end  
