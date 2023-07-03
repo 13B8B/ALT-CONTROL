@@ -1979,7 +1979,7 @@ do
 			Name = "Topbar",
 			Parent = ScreenGui.Frame,
 			Size = UDim2.new(1, -45, 0, 60),
-			Position = UDim2.new(0, 45, 0, 0),
+			Position = UDim2.new(-0.01, 45, -.009, 0),
 			BackgroundTransparency = 1,
 		}, {
 			library.Functions.newInstance("UIListLayout", {
