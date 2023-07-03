@@ -1926,9 +1926,9 @@ do
 			}, {
 				library.Functions.newInstance("ImageButton", { -- Logo
 					Name = "Logo",
-					Size = UDim2.new(0, 30, 0, 30),
-					Position = UDim2.new(0.5, 0, 0.5, 0),
-					AnchorPoint = Vector2.new(0.5, 0.5),
+					Size = UDim2.new(0, 32, 0, 32),
+					Position = UDim2.new(0.4, 3, 0.4, 0),
+					AnchorPoint = Vector2.new(0.4, 0.4),
 					BackgroundColor3 = library.Settings.theme.DarkContrast,
 					AutoButtonColor = false,
 				}, {
@@ -1936,7 +1936,7 @@ do
 						CornerRadius = UDim.new(0, 1),
 					}),
 					library.Functions.newInstance("ImageLabel", {
-						Size = UDim2.new(0, 22, 0, 22),
+						Size = UDim2.new(0, 23, 0, 23),
 						Position = UDim2.new(0.5, 0, 0.5, 0),
 						AnchorPoint = Vector2.new(0.5, 0.5),
 						Image = library.Icons.nexus,
@@ -1979,7 +1979,7 @@ do
 			Name = "Topbar",
 			Parent = ScreenGui.Frame,
 			Size = UDim2.new(1, -45, 0, 60),
-			Position = UDim2.new(-0.01, 45, -.009, 0),
+			Position = UDim2.new(-0.01, 41, -.0125, 0),
 			BackgroundTransparency = 1,
 		}, {
 			library.Functions.newInstance("UIListLayout", {
@@ -2764,7 +2764,7 @@ do
 		end
 
 		if toggle then
-			library.Functions.Tween(page.button, { ImageColor3 = library.Settings.theme.Accent }, 0.2)
+			library.Functions.Tween(page.button, { ImageColor3 = Color3.fromRGB(90, 8, 255) }, 0.2)
 			library.Functions.Tween(page.button.Parent.Dot, { Position = UDim2.new(0.5, 0, 1, 0) }, 0.4)
 			library.Functions.showInstance(page.button.Parent.Dot, 0.4)
 
@@ -4583,39 +4583,3 @@ end
 end
 
 return library
-
--- local window = library.new() -- create new window
--- local prefix = Enum.KeyCode.Home
-
--- local usePrefix = game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
--- 	if not processed and input.KeyCode == prefix then
--- 		window:toggle()
--- 	end
--- end)
--- table.insert(connections, usePrefix)
-
--- local page1 = window:addPage() -- new page
--- local page2 = window:addPage() -- new page
--- local page3 = window:addPage() -- new page
--- local page4 = window:addPage() -- new page
--- local section1 = page2:addSection({ Divisions = 2 }) -- new section
-
--- section1:addViewPlayer({ player = player })
--- section1:addButton({ section = 2, Disabled = true })
--- section1:addSlider({ section = 2, Max = 10, Disabled = true })
--- section1:addToggle({ section = 2, Disabled = true })
--- section1:addKeybind({ section = 2, Disabled = true })
--- section1:addCheckbox({ section = 2, Disabled = true })
--- section1:addClipboardLabel({ section = 2, text = "https://discord.gg/PremierX" })
--- section1:addDropdown({
--- 	section = 2,
--- 	Title = "MultiDropdown",
--- 	Multi = true,
--- 	List = { "Item 1", "Item 2", "Item 3" }
--- })
--- section1:addDropdown({
--- 	section = 2,
--- 	List = { "Item 1", "Item 2", "Item 3", "Item 4" }
--- })
-
--- window:SelectPage(page2, true)
