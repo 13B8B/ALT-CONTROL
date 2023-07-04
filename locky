@@ -2528,7 +2528,7 @@ do
 					Position = UDim2.new(0.5, 0, 1, 5),
 					AnchorPoint = Vector2.new(0.5, 1),
 					Image = "rbxassetid://6034407081",
-					ImageColor3 = library.Settings.theme.Accent,
+					ImageColor3 = Color3.fromRGB(193, 202, 255),
 				}),
 			}),
 		})
@@ -2743,7 +2743,7 @@ do
 
 		if not page and #self.pages > 0 then
 			page = self.pages[1]
-			library.Functions.Tween(page.button, { ImageColor3 = library.Settings.theme.Accent }, 0.2)
+			library.Functions.Tween(page.button, { ImageColor3 = Color3.fromRGB(90, 8, 255) }, 0.2)
 			library.Functions.Tween(page.button.Parent.Dot, { Position = UDim2.new(0.5, 0, 1, 0) }, 0.4)
 			library.Functions.showInstance(page.button.Parent.Dot, 0.4)
 
@@ -2764,8 +2764,9 @@ do
 		end
 
 		if toggle then
-			library.Functions.Tween(page.button, { ImageColor3 = Color3.fromRGB(90, 8, 255) }, 0.2)
-			library.Functions.Tween(page.button.Parent.Dot, { Position = UDim2.new(0.5, 0, 1, 0) }, 0.4)
+			library.Functions.Tween(page.button, { ImageColor3 = Color3.fromRGB(255, 255, 255) }, 0.2)
+			library.Functions.Tween(page.button.Parent.Dot, { Position = UDim2.new(0.5, 0, 1, 5) }, 0.2)
+
 			library.Functions.showInstance(page.button.Parent.Dot, 0.4)
 
 			local focusedPage = library.focusedPage
@@ -2784,6 +2785,7 @@ do
 		else
 			library.Functions.Tween(page.button, { ImageColor3 = library.Settings.theme.LightContrast }, 0.2)
 			library.Functions.Tween(page.button.Parent.Dot, { Position = UDim2.new(0.5, 0, 1, 5) }, 0.2)
+
 			library.Functions.hideInstance(page.button.Parent.Dot, 0.2)
 			page.container.Visible = false
 			if page == library.focusedPage then
@@ -3181,7 +3183,7 @@ do
 							AnchorPoint = Vector2.new(0, 0.5),
 							Position = UDim2.new(1, -5, 0.5, 0),
 							Size = UDim2.new(0, 10, 0, 10),
-							BackgroundColor3 = library.Settings.theme.Accent,
+							BackgroundColor3 = Color3.fromRGB(239, 35, 35),
 							BorderSizePixel = 0,
 							BackgroundTransparency = 1,
 						}, {
