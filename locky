@@ -3301,7 +3301,7 @@ do
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0.5, 0),
 				Size = UDim2.new(0.5, 0, 1, 0),
-				Font = Enum.Font.SciFi,
+				Font = Enum.Font.FredokaOne,
 				RichText = true,
 				Text = "<b>" .. (library.Functions.findByIndex(config, "Title") or "Toggle") .. "</b>",
 				TextColor3 = library.Settings.theme.TextColor,
