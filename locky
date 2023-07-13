@@ -2915,7 +2915,7 @@ do
 			BackgroundTransparency = 1,
 			TextSize = library.Functions.findByIndex(config, "TextSize") or 12,
 			TextXAlignment = library.Functions.findByIndex(config, "TextXAlignment") or Enum.TextXAlignment.Left,
-			Font = library.Functions.findByIndex(config, "Font") or Enum.Font.SciFi,
+			Font = Enum.Font.Merriweather,
 			TextColor3 = library.Settings.theme.TextColor,
 			TextWrapped = true,
 			RichText = true,
